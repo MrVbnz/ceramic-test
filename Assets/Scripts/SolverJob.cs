@@ -4,8 +4,6 @@ using UnityEngine;
 
 public struct SolverJob : IJobParallelFor
 {
-    
-
     [ReadOnly] public Matrix4x4 TestModelInverse;
     [ReadOnly] public NativeArray<Matrix4x4> Models;
     [ReadOnly] public NativeArray<Matrix4x4> Spaces;
@@ -31,8 +29,7 @@ public struct SolverJob : IJobParallelFor
             var isValidSpace = false;
             for (var spaceIndex = 0; spaceIndex < spacesLength; spaceIndex++)
             {
-                var d = MatrixComparer.MatrixDifference(offset * Models[modelIndex], Spaces[spaceIndex]);
-                if (d < MatrixComparer.MatrixEqualityThreshold)
+                if (MatrixComparer.Equals(offset * Models[modelIndex], Spaces[spaceIndex]))
                 {
                     isValidSpace = true;
                     break;
